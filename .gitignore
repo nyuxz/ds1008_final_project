@@ -1,8 +1,9 @@
 *.txt
+*.out
 */*.txt
 ssd/data/coco/
 ssd/data/VOCdevkit/
-
+ssd/data/OOIS/
 # Prerequisites
 *.d
 
