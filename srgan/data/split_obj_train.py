@@ -14,9 +14,9 @@ image_dir_list = [join(dataset_dir, x) for x in listdir(dataset_dir) if is_image
 
 # split train and val images
 number_of_train = int(len(image_dir_list) * 0.7)
-random.shuffle(image_name_list)
-image_train_list = image_name_list[:number_of_train]
-image_val_list = image_name_list[number_of_train:]
+random.shuffle(image_dir_list)
+image_train_list = image_dir_list[:number_of_train]
+image_val_list = image_dir_list[number_of_train:]
 
 # create new train and val folders
 train_folder_dir = './OOIS2012/train'
