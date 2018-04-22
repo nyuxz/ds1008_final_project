@@ -21,7 +21,7 @@ from ssd import build_ssd
 
 net = build_ssd('test', 300, 21)    # initialize SSD
 net.load_weights('../weights/ssd300_mAP_77.43_v2.pth')
-save_dir = "/Users/Sean/Desktop/OOIS"
+save_dir = "./OOIS"
 top_k=10
 # here we specify year (07 or 12) and dataset ('test', 'val', 'train')
 testset = VOCDetection(VOC_ROOT, [('2012', 'trainval')], None, VOCAnnotationTransform())
@@ -34,7 +34,7 @@ def crop(dic, i, rgb_image):
     width = dic[i]["width"]
     height = dic[i]["height"]
     return image[y0:y0+height , x0:x0+width, :]
-    
+
 
 number_of_image = len(testset)
 for img_id in range(10):
