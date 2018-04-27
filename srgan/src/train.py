@@ -27,8 +27,12 @@ CROP_SIZE = opt.crop_size
 UPSCALE_FACTOR = opt.upscale_factor
 NUM_EPOCHS = opt.num_epochs
 
-train_set = TrainDatasetFromFolder('data/VOC2012/train', crop_size=CROP_SIZE, upscale_factor=UPSCALE_FACTOR)
-val_set = ValDatasetFromFolder('data/VOC2012/val', upscale_factor=UPSCALE_FACTOR)
+# OOIS2012 or VOC2012
+
+dataset = 'OOIS2012'
+
+train_set = TrainDatasetFromFolder('data/'+dataset+'/train', crop_size=CROP_SIZE, upscale_factor=UPSCALE_FACTOR)
+val_set = ValDatasetFromFolder('data/'+dataset+'/val', upscale_factor=UPSCALE_FACTOR)
 train_loader = DataLoader(dataset=train_set, num_workers=4, batch_size=64, shuffle=True)
 val_loader = DataLoader(dataset=val_set, num_workers=4, batch_size=1, shuffle=False)
 
@@ -128,21 +132,21 @@ for epoch in range(1, NUM_EPOCHS + 1):
             desc='[converting LR images to SR images] PSNR: %.4f dB SSIM: %.4f' % (
                 valing_results['psnr'], valing_results['ssim']))
 
-        val_images.extend(
-            [display_transform()(val_hr_restore.squeeze(0)), display_transform()(hr.data.cpu().squeeze(0)),
-             display_transform()(sr.data.cpu().squeeze(0))])
-    val_images = torch.stack(val_images)
-    val_images = torch.chunk(val_images, val_images.size(0) // 15)
-    val_save_bar = tqdm(val_images, desc='[saving training results]')
-    index = 1
-    for image in val_save_bar:
-        image = utils.make_grid(image, nrow=3, padding=5)
-        utils.save_image(image, out_path + 'epoch_%d_index_%d.png' % (epoch, index), padding=5)
-        index += 1
+    #    val_images.extend(
+    #        [display_transform()(val_hr_restore.squeeze(0)), display_transform()(hr.data.cpu().squeeze(0)),
+    #         display_transform()(sr.data.cpu().squeeze(0))])
+    #val_images = torch.stack(val_images)
+    #val_images = torch.chunk(val_images, val_images.size(0) // 15)
+    #val_save_bar = tqdm(val_images, desc='[saving training results]')
+    #index = 1
+    #for image in val_save_bar:
+    #    image = utils.make_grid(image, nrow=3, padding=5)
+    #    utils.save_image(image, out_path + 'epoch_%d_index_%d.png' % (epoch, index), padding=5)
+    #    index += 1
 
     # save model parameters
-    torch.save(netG.state_dict(), 'epochs/netG_epoch_%d_%d.pth' % (UPSCALE_FACTOR, epoch))
-    torch.save(netD.state_dict(), 'epochs/netD_epoch_%d_%d.pth' % (UPSCALE_FACTOR, epoch))
+    torch.save(netG.state_dict(), 'epochs/%s_netG_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
+    torch.save(netD.state_dict(), 'epochs/%s_netD_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
     # save loss\scores\psnr\ssim
     results['d_loss'].append(running_results['d_loss'] / running_results['batch_sizes'])
     results['g_loss'].append(running_results['g_loss'] / running_results['batch_sizes'])

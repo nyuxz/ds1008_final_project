@@ -17,4 +17,4 @@ module load cuda/8.0.44
 module load cudnn/8.0v5.1
 
 
-time python3 train.py --crop_size 88 --upscale_factor 4 --num_epochs 100
+time src/python3 train.py --crop_size 88 --upscale_factor 4 --num_epochs 100

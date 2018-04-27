@@ -17,4 +17,4 @@ module load cuda/8.0.44
 module load cudnn/8.0v5.1
 
 
-time python3 test_image.py --image_name test_img.png
+time python3 src/test_image.py --image_name test_img.png
