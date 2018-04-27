@@ -1,4 +1,6 @@
 *.ipynb
+*.pth
+*.png
 *.txt
 *.out
 */*.txt
