@@ -1,7 +1,6 @@
 import argparse
 import os
 from math import log10
-
 import pandas as pd
 import torch.optim as optim
 import torch.utils.data
@@ -9,7 +8,6 @@ import torchvision.utils as utils
 from torch.autograd import Variable
 from torch.utils.data import DataLoader
 from tqdm import tqdm
-
 import pytorch_ssim
 from data_utils import TrainDatasetFromFolder, ValDatasetFromFolder, display_transform
 from loss import GeneratorLoss
@@ -20,16 +18,15 @@ parser.add_argument('--crop_size', default=88, type=int, help='training images c
 parser.add_argument('--upscale_factor', default=4, type=int, choices=[2, 4, 8],
                     help='super resolution upscale factor')
 parser.add_argument('--num_epochs', default=100, type=int, help='train epoch number')
+parser.add_argument('--dataset', default='VOC2012', type=str, help='OOIS2012 or VOC2012 or ...')
+
 
 opt = parser.parse_args()
 
 CROP_SIZE = opt.crop_size
 UPSCALE_FACTOR = opt.upscale_factor
 NUM_EPOCHS = opt.num_epochs
-
-# OOIS2012 or VOC2012
-
-dataset = 'OOIS2012'
+dataset = opt.dataset
 
 train_set = TrainDatasetFromFolder('data/'+dataset+'/train', crop_size=CROP_SIZE, upscale_factor=UPSCALE_FACTOR)
 val_set = ValDatasetFromFolder('data/'+dataset+'/val', upscale_factor=UPSCALE_FACTOR)
@@ -106,7 +103,7 @@ for epoch in range(1, NUM_EPOCHS + 1):
             running_results['g_score'] / running_results['batch_sizes']))
 
     netG.eval()
-    out_path = 'training_results/SRF_' + str(UPSCALE_FACTOR) + '/'
+    out_path = 'training_results/SRF_' + dataset + '_' +str(UPSCALE_FACTOR) + '/'
     if not os.path.exists(out_path):
         os.makedirs(out_path)
     val_bar = tqdm(val_loader)
@@ -145,8 +142,10 @@ for epoch in range(1, NUM_EPOCHS + 1):
     #    index += 1
 
     # save model parameters
-    torch.save(netG.state_dict(), 'epochs/%s_netG_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
-    torch.save(netD.state_dict(), 'epochs/%s_netD_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
+    if not os.path.exists('epochs/'+dataset):
+        os.makedirs('epochs/'+dataset)
+    torch.save(netG.state_dict(), 'epochs/'+dataset+'/%s_netG_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
+    torch.save(netD.state_dict(), 'epochs/'+dataset+'/%s_netD_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
     # save loss\scores\psnr\ssim
     results['d_loss'].append(running_results['d_loss'] / running_results['batch_sizes'])
     results['g_loss'].append(running_results['g_loss'] / running_results['batch_sizes'])
@@ -161,4 +160,4 @@ for epoch in range(1, NUM_EPOCHS + 1):
             data={'Loss_D': results['d_loss'], 'Loss_G': results['g_loss'], 'Score_D': results['d_score'],
                   'Score_G': results['g_score'], 'PSNR': results['psnr'], 'SSIM': results['ssim']},
             index=range(1, epoch + 1))
-        data_frame.to_csv(out_path + 'srf_' + str(UPSCALE_FACTOR) + '_train_results.csv', index_label='Epoch')
+        data_frame.to_csv(out_path + dataset + '_'+ str(UPSCALE_FACTOR) + '_train_results.csv', index_label='Epoch')
