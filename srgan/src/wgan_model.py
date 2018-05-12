@@ -1,6 +1,23 @@
 import math
 import torch.nn.functional as F
 from torch import nn
+import torch
+import torch.autograd as autograd
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torch.autograd import Variable
+from torch.autograd import grad
+
+
+'''
+1. no BN (cause error when loadding model)
+2. Discriminator do not return a probability (not taking log as well)
+3. Leaky reLu activation in discriminator (srgan generator still use prelu)
+4. GP
+'''
+
+use_cuda = torch.cuda.is_available()
 
 def swish(x):
     return x * F.sigmoid(x)
@@ -48,31 +65,31 @@ class Discriminator(nn.Module):
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(64, 64, kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(64),
+            #nn.BatchNorm2d(64),
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(64, 128, kernel_size=3, padding=1),
-            nn.BatchNorm2d(128),
+            #nn.BatchNorm2d(128),
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(128, 128, kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(128),
+            #nn.BatchNorm2d(128),
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(128, 256, kernel_size=3, padding=1),
-            nn.BatchNorm2d(256),
+            #nn.BatchNorm2d(256),
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(256, 256, kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(256),
+            #nn.BatchNorm2d(256),
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(256, 512, kernel_size=3, padding=1),
-            nn.BatchNorm2d(512),
+            #nn.BatchNorm2d(512),
             nn.LeakyReLU(0.2),
 
             nn.Conv2d(512, 512, kernel_size=3, stride=2, padding=1),
-            nn.BatchNorm2d(512),
+            #nn.BatchNorm2d(512),
             nn.LeakyReLU(0.2),
 
             nn.AdaptiveAvgPool2d(1),
@@ -105,7 +122,6 @@ class ResidualBlock(nn.Module):
 
         return x + residual
 
-
 class UpsampleBLock(nn.Module):
     def __init__(self, in_channels, up_scale):
         super(UpsampleBLock, self).__init__()
@@ -118,3 +134,30 @@ class UpsampleBLock(nn.Module):
         x = self.pixel_shuffle(x)
         x = self.prelu(x)
         return x
+
+
+def utils_cuda(xs):
+    if torch.cuda.is_available():
+        if not isinstance(xs, (list, tuple)):
+            return xs.cuda()
+        else:
+            return [x.cuda() for x in xs]
+
+def cal_gradient_penalty(x, y, f):
+    '''
+    @x: real_data
+    @y: fake_data
+    @f: discriminator
+    '''
+    # interpolation
+    shape = [x.size(0)] + [1] * (x.dim() - 1)
+    alpha = utils_cuda(torch.rand(shape))
+    z = x + alpha * (y - x)
+
+    # gradient penalty
+    z = utils_cuda(Variable(z, requires_grad=True))
+    o = f(z)
+    g = grad(o, z, grad_outputs=utils_cuda(torch.ones(o.size())), create_graph=True)[0].view(z.size(0), -1)
+    gp = ((g.norm(p=2, dim=1) - 1)**2).mean()
+
+    return gp

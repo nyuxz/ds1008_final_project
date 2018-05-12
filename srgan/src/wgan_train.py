@@ -10,8 +10,8 @@ from torch.utils.data import DataLoader
 from tqdm import tqdm
 import pytorch_ssim
 from data_utils import TrainDatasetFromFolder, ValDatasetFromFolder, display_transform
-from loss import GeneratorLoss
-from model import Generator, Discriminator
+from loss import GeneratorLoss, W_GeneratorLoss
+from wgan_model import Generator, Discriminator, cal_gradient_penalty
 
 parser = argparse.ArgumentParser(description='Train Super Resolution Models')
 parser.add_argument('--crop_size', default=88, type=int, help='training images crop size')
@@ -38,12 +38,20 @@ print('# generator parameters:', sum(param.numel() for param in netG.parameters(
 netD = Discriminator()
 print('# discriminator parameters:', sum(param.numel() for param in netD.parameters()))
 
+#generator_criterion = W_GeneratorLoss()
 generator_criterion = GeneratorLoss()
 
 if torch.cuda.is_available():
     netG.cuda()
     netD.cuda()
     generator_criterion.cuda()
+
+# define indictor tensor for different backward usage
+one = torch.FloatTensor([1])
+mone = one * -1
+if torch.cuda.is_available():
+    one = one.cuda()
+    mone = mone.cuda()
 
 optimizerG = optim.Adam(netG.parameters())
 optimizerD = optim.Adam(netD.parameters())
@@ -62,8 +70,8 @@ for epoch in range(1, NUM_EPOCHS + 1):
         running_results['batch_sizes'] += batch_size
 
         ############################
-        # (1) Update D network: maximize D(x)-1-D(G(z))
-        # which is minimize 1 - D(x) + D(G(z))
+        # (1) Update D network: maximize D(x)-D(G(z))
+        # which is minimize D(G(z)) - D(x)
         ###########################
         real_img = Variable(target)
         if torch.cuda.is_available():
@@ -74,10 +82,18 @@ for epoch in range(1, NUM_EPOCHS + 1):
         fake_img = netG(z)
 
         netD.zero_grad()
+
         real_out = netD(real_img).mean()
+        real_out.backward(mone, retain_graph=True) # coz we want real_out as large as possible in discriminator
         fake_out = netD(fake_img).mean()
-        d_loss = 1 - real_out + fake_out
-        d_loss.backward(retain_graph=True)
+        fake_out.backward(one, retain_graph=True)
+
+        # train with gradient penalty
+        gradient_penalty = cal_gradient_penalty(real_img.data, fake_img.data, netD)
+        gradient_penalty.backward(retain_graph=True)
+
+        d_loss = fake_out - real_out + gradient_penalty
+        Wasserstein_D = real_out - fake_out
         optimizerD.step()
 
         ############################
@@ -86,6 +102,16 @@ for epoch in range(1, NUM_EPOCHS + 1):
         netG.zero_grad()
         g_loss = generator_criterion(fake_out, fake_img, real_img)
         g_loss.backward()
+
+        '''
+        image_loss, adversarial, content_loss, tv_loss = generator_criterion(fake_out, fake_img, real_img)
+        image_loss.backward(retain_graph=True)
+        adversarial.backward(mone, retain_graph=True)  # coz we want fake_out as large as possible in generator to fool discriminator
+        content_loss.backward(retain_graph=True)
+        tv_loss.backward(retain_graph=True)
+        g_loss = -adversarial + image_loss + content_loss + tv_loss
+        '''
+
         optimizerG.step()
         fake_img = netG(z)
         fake_out = netD(fake_img).mean() # fake_out is given by the discriminator, so it is scalar
@@ -94,6 +120,10 @@ for epoch in range(1, NUM_EPOCHS + 1):
         # Report current training sample
         ############################
         # generator_total_loss
+        '''
+        image_loss, adversarial, content_loss, tv_loss = generator_criterion(fake_out, fake_img, real_img)
+        g_loss = -adversarial + image_loss + content_loss + tv_loss
+        '''
         g_loss = generator_criterion(fake_out, fake_img, real_img)
         running_results['g_loss'] += g_loss.data[0] * batch_size
         # discriminator_total_loss
@@ -109,7 +139,7 @@ for epoch in range(1, NUM_EPOCHS + 1):
             running_results['g_score'] / running_results['batch_sizes']))
 
     netG.eval()
-    out_path = 'training_results/SRF_' + dataset + '_' +str(UPSCALE_FACTOR) + '/'
+    out_path = 'wgan_training_results/SRF_' + dataset + '_' +str(UPSCALE_FACTOR) + '/'
     if not os.path.exists(out_path):
         os.makedirs(out_path)
     val_bar = tqdm(val_loader)
@@ -148,10 +178,10 @@ for epoch in range(1, NUM_EPOCHS + 1):
     #    index += 1
 
     # save model parameters
-    if not os.path.exists('epochs/'+dataset):
-        os.makedirs('epochs/'+dataset)
-    torch.save(netG.state_dict(), 'epochs/'+dataset+'/%s_netG_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
-    torch.save(netD.state_dict(), 'epochs/'+dataset+'/%s_netD_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
+    if not os.path.exists('wgan_epochs/'+dataset):
+        os.makedirs('wgan_epochs/'+dataset)
+    torch.save(netG.state_dict(), 'wgan_epochs/'+dataset+'/%s_netG_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
+    torch.save(netD.state_dict(), 'wgan_epochs/'+dataset+'/%s_netD_epoch_%d_%d.pth' % (dataset, UPSCALE_FACTOR, epoch))
     # save loss\scores\psnr\ssim
     results['d_loss'].append(running_results['d_loss'] / running_results['batch_sizes'])
     results['g_loss'].append(running_results['g_loss'] / running_results['batch_sizes'])
@@ -160,8 +190,10 @@ for epoch in range(1, NUM_EPOCHS + 1):
     results['psnr'].append(valing_results['psnr'])
     results['ssim'].append(valing_results['ssim'])
 
+    if not os.path.exists('wgan_statistics/'):
+        os.makedirs('wgan_statistics/')
     if epoch % 10 == 0 and epoch != 0:
-        out_path = 'statistics/'
+        out_path = 'wgan_statistics/'
         data_frame = pd.DataFrame(
             data={'Loss_D': results['d_loss'], 'Loss_G': results['g_loss'], 'Score_D': results['d_score'],
                   'Score_G': results['g_score'], 'PSNR': results['psnr'], 'SSIM': results['ssim']},
