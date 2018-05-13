@@ -18,11 +18,14 @@ parser = argparse.ArgumentParser(description='Test Benchmark Datasets')
 parser.add_argument('--upscale_factor', default=4, type=int, help='super resolution upscale factor')
 parser.add_argument('--model_name', default='netG_epoch_4_99.pth', type=str, help='generator model epoch name')
 parser.add_argument('--datasetmodel', default='VOC2012', type=str, help='dataset name')
+parser.add_argument('--modeldir', default='wgan_epochs/', type=str, help='model saved dir []')
+
 opt = parser.parse_args()
 
 UPSCALE_FACTOR = opt.upscale_factor
 MODEL_NAME = opt.model_name
 datasetmodel = opt.datasetmodel
+modeldir = opt.modeldir
 
 
 results = {'Set5': {'psnr': [], 'ssim': []}, 'Set14': {'psnr': [], 'ssim': []}, 'BSD100': {'psnr': [], 'ssim': []},
@@ -31,7 +34,7 @@ results = {'Set5': {'psnr': [], 'ssim': []}, 'Set14': {'psnr': [], 'ssim': []}, 
 model = Generator(UPSCALE_FACTOR).eval()
 if torch.cuda.is_available():
     model = model.cuda()
-model.load_state_dict(torch.load('epochs/' + datasetmodel + '/' + datasetmodel + '_'+ MODEL_NAME))
+model.load_state_dict(torch.load(modeldir + datasetmodel + '/' + datasetmodel + '_'+ MODEL_NAME))
 
 
 test_set = TestDatasetFromFolder('data/test', upscale_factor=UPSCALE_FACTOR)
