@@ -72,7 +72,7 @@ An example of training usage is shown as follows:
 python Main.py --Image_ID=108
 ```
 
-##### Time in Expectation
+#### Expected Running Time
 We test 100 image samples on our pipeline. The average time to reconstruct a super-resolved object-oriented image is 1.04s. If we  apply SRGAN on the whole image, it will cost 2.179s. Therefore, our object-oriented super-resolution pipeline can provide more realistic object details and in the mean time save computational cost. 
 
 ## Download Pre-trained Models
