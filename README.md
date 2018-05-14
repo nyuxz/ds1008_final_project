@@ -1,10 +1,14 @@
 # DS-GA-1008 Deep Learning Final Project: Spring 2018
 # Object-Oriented Super-Resolution Imaging
 
-## Authors
+### Authors
 
 * [**Xinsheng(Sean) Zhang**](https://github.com/nyuxz)
 * [**Binqian(Eric) Zeng**](http://github.com/bz866)
+
+### Pipeline Overview
+.. image:: docs/EnhanceCSI_example.png
+    :target: http://enhance.nucl.ai/w/8581db92-9d61-11e6-990b-c86000be451f/view
 
 
 
