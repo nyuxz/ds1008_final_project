@@ -1,0 +1,1 @@
+python enhance.py --type=photo --model=deblur --zoom=1 ../Images/Neural_Enhance_Deblur/*.jpg
