@@ -48,6 +48,27 @@ OOIS Google Drive Link: (https://drive.google.com/file/d/1iQZm2boHvyTAMf8LUo0fll
 
 
 ## Usage
+```python Main.py [-h] [--HOME_PATH] [--SSD_weights_PATH] [--size_input_images]
+               [--num_classes_of_objects [--Image_ID] [Top_n_objects2Segment] [--Bicubic_UpSampling_Factor]
+               [--cuda]
+               
+  optional arguments:
+  -h, --help                    Show this help message and exit
+  --HOME_PATH                   Pipeline workspace PATH; default = "~/Object-orientedImageDeblurringPipelineWorkSpace"
+  --SSD_weights_PATH            pre-trained SSD model weights PATH; default = "./ssd_master/weights/ssd300_mAP_77.43_v2.pth"
+  --size_input_images           Size of Input Images; default = 300
+  --num_classes_of_classes      The number of object classes to score; default = 21
+  --Image_ID                    The Index of target image in the dataset(PascalVOC). In the demo, the index appears at the top of Image Document Name"; Selected Image_ID for Demo must be one of [61, 73, 115, 108]
+  --Top_n_objects2Segment       Maximum of Number of Objects to be Segemented; default = 61
+  --Bicubic_Upsampling_Factor   Upsampling Factor for Bicubic Interpolation; 400 means zoom in x4
+  --cuda                        Use cuda; 0 means on CPU, 1 means on GPU.
+```
+
+An example of training usage is shown as follows:
+
+```python Main.py --Image_ID=108
+```
+
 #### Module-1 Objects Segementation by SSD
 The SSD code is based on (https://github.com/amdegroot/ssd.pytorch).  
 #### Download a pre-trained SSD network
