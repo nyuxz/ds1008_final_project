@@ -9,6 +9,9 @@
 <img src="Pipeline_Overview_Horizontal.png" width="700">
 
 ### Usage
+- The `ssd` and the `srgan` directory should be mannully removed under the `Object-orientedImageDeblurringPipelineWorkSpace` directory, as `Object-orientedImageDeblurringPipelineWorkSpace\ssd` and `\Object-orientedImageDeblurringPipelineWorkSpace\srgan`. 
+- In following steps, we assume that users have mannually moved directories as mentioned. 
+
 #### Module-1 
 The SSD code is based on (https://github.com/amdegroot/ssd.pytorch).  
 #### Download a pre-trained SSD network
