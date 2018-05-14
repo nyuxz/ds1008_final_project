@@ -7,8 +7,8 @@
 * [**Binqian(Eric) Zeng**](http://github.com/bz866)
 
 ### Pipeline Overview
-.. image:: docs/EnhanceCSI_example.png
-    :target: http://enhance.nucl.ai/w/8581db92-9d61-11e6-990b-c86000be451f/view
+.. image:: Pipeline_Overview_Horizontal.png
+    :target: https://github.com/nyuxz/ds1008_final_project/blob/master/Pipeline_Overview_Horizontal.png
 
 
 
