@@ -8,11 +8,11 @@
 ### Pipeline Overview
 <img src="Pipeline_Overview_Horizontal.png" width="700">
 
-#### Usage
-##### Module-1 
+### Usage
+#### Module-1 
 The SSD code is based on (https://github.com/amdegroot/ssd.pytorch).  
 #### Download a pre-trained SSD network
-Pre-trained model for SSD are provided in
+- Pre-trained model for SSD are provided in:
     * SSD300 trained on VOC0712 (newest PyTorch weights)
       - https://s3.amazonaws.com/amdegroot-models/ssd300_mAP_77.43_v2.pth
     * SSD300 trained on VOC0712 (original Caffe weights)
