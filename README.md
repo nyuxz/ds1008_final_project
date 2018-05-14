@@ -5,12 +5,30 @@
 * [**Xinsheng(Sean) Zhang**](https://github.com/nyuxz)
 * [**Binqian(Eric) Zeng**](http://github.com/bz866)
 
-|Python Version|
-
 ### Pipeline Overview
 <img src="Pipeline_Overview_Horizontal.png" width="700">
 
-#### Module
+#### Usage
+##### Module-1 
+The SSD code is based on (https://github.com/amdegroot/ssd.pytorch).  
+#### Download a pre-trained SSD network
+Pre-trained model for SSD are provided in
+    * SSD300 trained on VOC0712 (newest PyTorch weights)
+      - https://s3.amazonaws.com/amdegroot-models/ssd300_mAP_77.43_v2.pth
+    * SSD300 trained on VOC0712 (original Caffe weights)
+      - https://s3.amazonaws.com/amdegroot-models/ssd_300_VOC0712.pth
+
+
+#### Requirements
+VOC Dataset
+PASCAL VOC: Visual Object Classes
+
+Download VOC2007 trainval & test
+# specify a directory for dataset to be downloaded into, else default is ~/data/
+sh data/scripts/VOC2007.sh # <directory>
+Download VOC2012 trainval
+# specify a directory for dataset to be downloaded into, else default is ~/data/
+sh data/scripts/VOC2012.sh # <directory>
 
 
 
