@@ -114,6 +114,16 @@ We use peak signal-to-noise ratio (PSNR) and structural similarity (SSIM) to eva
 $$$\textbf{pixel-wise\ MSE} = \frac{1}{mn}\sum_{0}^{m-1}\sum_{0}^{n-1}{\vert\vert f(i,j) - g(i,j)\vert\vert}^{2}$$$
 $\textbf{PSNR} = 10 \log_{10} (\frac{1}{\textbf{pixel-wise\ MSE}})$
 
+| Model                            |    PSNR    |   SSIM   |
+| ---------------------------------| ---------- | -------- |
+| SRGAN+PascalVOC                  |   27.671   |  0.826   |
+| SRGAN+OOIS                       |   28.444   |  0.830   |
+| SRGAN+OOIS AUG                   |   28.776   |  0.841   |
+| ModifiedSRGAN+PascalVOC          |   28.279   |  0.827   |
+| Modified SRGAN+OOIS              |   28.827   |  0.839   |
+| Modified SRGAN+OOIS AUG          |   29.323   |  0.860   |
+
+
 
  
 
