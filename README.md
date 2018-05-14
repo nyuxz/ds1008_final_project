@@ -73,7 +73,7 @@ python Main.py --Image_ID=108
 ```
 
 ## Download Pre-trained Models
-#### Module-1 Objects Segementation by SSD
+### Module-1 Objects Segementation by SSD
 The SSD code is based on (https://github.com/amdegroot/ssd.pytorch).  
 #### Download a pre-trained SSD network
 - Pre-trained model for SSD are provided in:
@@ -88,7 +88,7 @@ cd weights
 wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth
 ```
 
-#### Module-2 Objects Super-Resolution with SRGAN
+### Module-2 Objects Super-Resolution with SRGAN
 - Train the SRGAN model on OOIS dataset. 
 ```
 cd /srgan
@@ -100,8 +100,14 @@ python src/train.py --dataset 'OOIS2012 --upscale_factor 4 --crop_size 44''
 python src/wgan_train.py --dataset 'OOIS2012 --upscale_factor --crop_size 44''
 
 ```
-- 
 
+### Module-3 Seams Smoothing & Background Deblurring by [**Neural-Enhance**](https://github.com/alexjc/neural-enhance)
+- 
+```
+cd /neural-enhance  #Pre-trained model should be download into the './Object-orientedImageDeblurringPipelineWorkSpace/neural-enhance' directory
+```
+- Released pre-trained Neural-Enhance models are in (https://github.com/alexjc/neural-enhance/releases)
+- Usage can be found in (https://github.com/alexjc/neural-enhance)
 
  
 
