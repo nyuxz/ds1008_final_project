@@ -124,6 +124,8 @@ $\textbf{PSNR} = 10 \log_{10} (\frac{1}{\textbf{pixel-wise\ MSE}})$
 | Modified SRGAN+OOIS AUG          |   29.323   |  0.860   |
 
 
+## Conclusion and Future Work
+Our super-resolution pipeline can fast produce HR images with enriched object details, and it costs around 1s per image. It shows the SRGAN trained on our OOIS dataset achieves better evaluation scores. According to WGAN, the improved SRGAN by changing loss function improves super-resolution result as well. For the future work, the smoothing can be improved. 
 
  
 
