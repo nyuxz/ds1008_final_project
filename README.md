@@ -6,7 +6,7 @@
 * [**Binqian(Eric) Zeng**](http://github.com/bz866)
 
 ### Pipeline Overview
-< img src="Pipeline_Overview_Horizontal.png" width="600" >
+<img src="Pipeline_Overview_Horizontal.png" width="600">
 
 
 
