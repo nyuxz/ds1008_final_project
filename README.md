@@ -88,6 +88,21 @@ cd weights
 wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth
 ```
 
+#### Module-2 Objects Super-Resolution with SRGAN
+- Train the SRGAN model on OOIS dataset. 
+```
+cd /srgan
+
+#Original SRGAN
+python src/train.py --dataset 'OOIS2012 --upscale_factor 4 --crop_size 44''
+
+#improved SRGAN (ref:WGAN)
+python src/wgan_train.py --dataset 'OOIS2012 --upscale_factor --crop_size 44''
+
+```
+- 
+
+
  
 
 ## References
