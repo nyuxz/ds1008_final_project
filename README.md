@@ -2,8 +2,8 @@
 
 ## Authors
 
-* [**Xinsheng(Sean) Zhang**](https://github.com/nyuxz)
-* [**Binqian(Eric) Zeng**](http://github.com/bz866)
+* [**Xinsheng(Sean) Zhang**](https://github.com/nyuxz) xz1757@nyu.edu
+* [**Binqian(Eric) Zeng**](http://github.com/bz866) bz866@nyu.edu
 
 ## Pipeline Overview
 <img src="Pipeline_Overview_Horizontal.png" width="700">
@@ -15,7 +15,11 @@
 ## Requirements
 - Python 3.6
 - Theano==0.8.2
-
+- pillow>=3.2.0
+- Works on CPU or on an NVIDIA GPU
+- opencv2
+- Install the imutils package to leverage multi-threading on CPU:
+  * pip install imutils
 - The `ssd` and the `srgan` directory should be mannully removed under the `Object-orientedImageDeblurringPipelineWorkSpace` directory, as 
    * `Object-orientedImageDeblurringPipelineWorkSpace\ssd`
    * `\Object-orientedImageDeblurringPipelineWorkSpace\srgan`. 
@@ -59,21 +63,7 @@ cd weights
 wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth
 ```
 
-
-#### Requirements
-VOC Dataset
-PASCAL VOC: Visual Object Classes
-
-Download VOC2007 trainval & test
-# specify a directory for dataset to be downloaded into, else default is ~/data/
-sh data/scripts/VOC2007.sh # <directory>
-Download VOC2012 trainval
-# specify a directory for dataset to be downloaded into, else default is ~/data/
-sh data/scripts/VOC2012.sh # <directory>
-
-
-
-SSD code based on \cite{SSDGithub}, and trained model on PascalVOC2012 benchmark dataset. 
+ 
 
 ## References
 - Wei Liu, Dragomir Anguelov, Dumitru Erhan, Christian Szegedy, Scott Reed, Cheng-Yang Fu, and Alexander C
