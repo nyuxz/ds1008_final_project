@@ -6,7 +6,7 @@
 * [**Binqian(Eric) Zeng**](http://github.com/bz866)
 
 ### Pipeline Overview
-.. image:: ./Pipeline_Overview_Horizontal.png
+< img src="Pipeline_Overview_Horizontal.png" width="600">
     :target: https://github.com/nyuxz/ds1008_final_project/blob/master/Pipeline_Overview_Horizontal.png
 
 
