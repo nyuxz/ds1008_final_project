@@ -1,4 +1,3 @@
-# DS-GA-1008 Deep Learning Final Project: Spring 2018
 # Object-Oriented Super-Resolution Imaging
 
 ### Authors
@@ -7,7 +6,7 @@
 * [**Binqian(Eric) Zeng**](http://github.com/bz866)
 
 ### Pipeline Overview
-.. image:: Pipeline_Overview_Horizontal.png
+.. image:: ./Pipeline_Overview_Horizontal.png
     :target: https://github.com/nyuxz/ds1008_final_project/blob/master/Pipeline_Overview_Horizontal.png
 
 
