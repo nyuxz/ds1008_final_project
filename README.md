@@ -48,7 +48,8 @@ OOIS Google Drive Link: (https://drive.google.com/file/d/1iQZm2boHvyTAMf8LUo0fll
 
 
 ## Usage
-```python Main.py [-h] [--HOME_PATH] [--SSD_weights_PATH] [--size_input_images]
+```Shell
+python Main.py [-h] [--HOME_PATH] [--SSD_weights_PATH] [--size_input_images]
                [--num_classes_of_objects [--Image_ID] [Top_n_objects2Segment] [--Bicubic_UpSampling_Factor]
                [--cuda]
                
@@ -66,7 +67,8 @@ OOIS Google Drive Link: (https://drive.google.com/file/d/1iQZm2boHvyTAMf8LUo0fll
 
 An example of training usage is shown as follows:
 
-```python Main.py --Image_ID=108
+```Shell
+python Main.py --Image_ID=108
 ```
 
 #### Module-1 Objects Segementation by SSD
