@@ -40,7 +40,7 @@ sh /ssd/data/scripts/VOC2007.sh # <directory>
 # specify a directory for dataset to be downloaded into, else default is ~/ssd/data
 sh /ssd/data/scripts/VOC2012.sh # <directory>
 ```
-### Object Only Image Set(OOIS)
+### 👍Object Only Image Set(OOIS)👍
 OOIS: The images we used to create Object Only Im- age Set (OOIS) is obtained from the PASCAL Vi- sual Object Classes Challenge 2012 (PascalVOC). We employ object detection model on PascalVOC to predict object bounding boxes for each im- age. Then we segment object patches by bound- ing boxes. The collection of all object patches is our new dataset.
 
 ##### Download OOIS Dataset
