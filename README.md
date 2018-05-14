@@ -115,8 +115,8 @@ cd /neural-enhance  #Pre-trained model should be download into the './Object-ori
 
 ## Evauation Metrics
 We use peak signal-to-noise ratio (PSNR) and structural similarity (SSIM) to evaluate and compare super-resolution algorithms.  We define PSNR score as following,
-$$$\textbf{pixel-wise\ MSE} = \frac{1}{mn}\sum_{0}^{m-1}\sum_{0}^{n-1}{\vert\vert f(i,j) - g(i,j)\vert\vert}^{2}$$$
-$\textbf{PSNR} = 10 \log_{10} (\frac{1}{\textbf{pixel-wise\ MSE}})$
+<img src="PSNR_Formula.png" width="700">
+
 
 #### Experiment Quantitative Evaluation
 We train SRGAN model and modified SRGAN model (based on WGAN improvement) on three different datasets: PascalVOC, OOIS, and OOIS dataset with augmentations (OOIS AUG) respec- tively. We test the model performance on the Set5 benchmark dataset. The evaluation results are shown in Table 1.
