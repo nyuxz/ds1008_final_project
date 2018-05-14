@@ -76,7 +76,7 @@ python Main.py --Image_ID=108
 We test 100 image samples on our pipeline. The average time to reconstruct a super-resolved object-oriented image is 1.04s. If we  apply SRGAN on the whole image, it will cost 2.179s. Therefore, our object-oriented super-resolution pipeline can provide more realistic object details and in the mean time save computational cost. 
 
 ## Download Pre-trained Models
-### Module-1 Objects Segementation by SSD
+### Module-1 Objects Segementation by SSD(https://github.com/amdegroot/ssd.pytorch)
 The SSD code is based on (https://github.com/amdegroot/ssd.pytorch).  
 #### Download a pre-trained SSD network
 - Pre-trained model for SSD are provided in:
@@ -92,6 +92,7 @@ wget https://s3.amazonaws.com/amdegroot-models/vgg16_reducedfc.pth
 ```
 
 ### Module-2 Objects Super-Resolution with SRGAN
+The SRGAN and improved SRGAN code is based on (https://github.com/amdegroot/ssd.pytorch)
 - Train the SRGAN model on OOIS dataset. 
 ```
 cd /srgan
