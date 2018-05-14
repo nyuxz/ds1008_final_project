@@ -111,7 +111,7 @@ cd /neural-enhance  #Pre-trained model should be download into the './Object-ori
 
 ## Evauation Metrics
 We use peak signal-to-noise ratio (PSNR) and structural similarity (SSIM) to evaluate and compare super-resolution algorithms.  We define PSNR score as following,
-$\textbf{pixel-wise\ MSE} = \frac{1}{mn}\sum_{0}^{m-1}\sum_{0}^{n-1}{\vert\vert f(i,j) - g(i,j)\vert\vert}^{2}$
+![\textbf{pixel-wise\ MSE} = \frac{1}{mn}\sum_{0}^{m-1}\sum_{0}^{n-1}{\vert\vert f(i,j) - g(i,j)\vert\vert}^{2}]
 $\textbf{PSNR} = 10 \log_{10} (\frac{1}{\textbf{pixel-wise\ MSE}})$
 
 
