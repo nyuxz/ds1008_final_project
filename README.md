@@ -8,10 +8,6 @@
 ## Pipeline Overview
 <img src="Pipeline_Overview_Horizontal.png" width="700">
 
-## Sample Results
-- Object Super-Resolution Results (Original (Left) vs. Generated (Right))
-<img src="MergedObjects4Comparison.jpg" width="700">
-
 ## Requirements
 - Python 3.6
 - Theano==0.8.2
@@ -98,10 +94,10 @@ The SRGAN and improved SRGAN code is based on (https://github.com/amdegroot/ssd.
 cd /srgan
 
 #Original SRGAN
-python src/train.py --dataset 'OOIS2012 --upscale_factor 4 --crop_size 44''
+python src/train.py --dataset OOIS2012 --upscale_factor 4 --crop_size 44
 
 #improved SRGAN (ref:WGAN)
-python src/wgan_train.py --dataset 'OOIS2012 --upscale_factor --crop_size 44''
+python src/wgan_train.py --dataset OOIS2012 --upscale_factor --crop_size 44
 
 ```
 
@@ -130,7 +126,7 @@ We train SRGAN model and modified SRGAN model (based on WGAN improvement) on thr
 | Modified SRGAN+OOIS              |   28.827   |  0.839   |
 | Modified SRGAN+OOIS AUG          |   29.323   |  0.860   |
 
-#### Qualitative Evaluation (same as sample results shown in the beginning)
+#### Qualitative Evaluation
 - Object Super-Resolution Results (Original (Left) vs. Generated (Right))
 <img src="MergedObjects4Comparison.jpg" width="700">
 
